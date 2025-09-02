@@ -49,12 +49,12 @@ public class Main {
       java.util.HashMap<String, byte[]> bodyMap = new java.util.HashMap<>();
       bodyMap.put("body", bodyContent);
       rcvivedMessage.setBody(bodyMap);
-      System.out.println("Message Size: " + rcvivedMessage.getMessage_size());
-      System.out.println("Header correlation_id: " + rcvivedMessage.getHeader().get("correlation_id"));
-      System.out.print("Body content: ");
-      for(byte b : rcvivedMessage.getBody().get("body")) {
-          System.out.print(b + " ");
-      }
+      // System.out.println("Message Size: " + rcvivedMessage.getMessage_size());
+      // System.out.println("Header correlation_id: " + rcvivedMessage.getHeader().get("correlation_id"));
+      // System.out.print("Body content: ");
+      // for(byte b : rcvivedMessage.getBody().get("body")) {
+      //     System.out.print(b + " ");
+      // }
       byte[] rcvivedBytes = toBytes(rcvivedMessage);
       System.out.println("\nTotal bytes to send: " + rcvivedBytes.length);
       clientSocket.getOutputStream().write(rcvivedBytes);
