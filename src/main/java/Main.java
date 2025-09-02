@@ -1,6 +1,8 @@
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+// import ResponseMessage if needed, e.g.:;
 
 public class Main {
   public static void main(String[] args){
@@ -19,6 +21,29 @@ public class Main {
       serverSocket.setReuseAddress(true);
       // Wait for connection from client.
       clientSocket = serverSocket.accept();
+      System.out.println("Accepted connection from " + clientSocket);
+      // Now you can read/write from/to clientSocket.
+      
+      // Example: read a byte
+      int read_val= clientSocket.getInputStream().read();
+      System.out.println("Read byte: " + read_val);
+
+      ResponseMessage rcvivedMessage = new ResponseMessage( null, null) ;
+      java.util.HashMap<String, Integer> headerMap = new java.util.HashMap<>();
+      headerMap.put("correlation_id", read_val);
+      rcvivedMessage.setHeader(headerMap);
+      rcvivedMessage.setMessage_size(5);
+      byte[] bodyContent = new byte[]{10,20,30,40};
+      java.util.HashMap<String, byte[]> bodyMap = new java.util.HashMap<>();
+      bodyMap.put("body", bodyContent);
+      rcvivedMessage.setBody(bodyMap);
+      System.out.println("Message Size: " + rcvivedMessage.getMessage_size());
+      System.out.println("Header correlation_id: " + rcvivedMessage.getHeader().get("correlation_id"));
+      System.out.print("Body content: ");
+      clientSocket.getOutputStream().write(rcvivedMessage.getHeader().get("correlation_id"));
+      
+      
+
     } catch (IOException e) {
       System.out.println("IOException: " + e.getMessage());
     } finally {

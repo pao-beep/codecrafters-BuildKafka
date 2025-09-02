@@ -1,0 +1,35 @@
+
+import java.util.Map;
+import java.util.HashMap;
+public class ResponseMessage {
+    private int message_size = 4096; 
+    private Map<String,Integer> header = new HashMap<>();
+    private Map<String, byte[]> body = new HashMap<>();
+
+    public ResponseMessage(Map<String,Integer> header, Map<String,byte[]> body) {
+        //this.message_size = message_size;
+        this.header = header;
+        this.body = body;
+    }
+    public long getMessage_size() {
+        return message_size;
+    }
+    public Map<String, Integer> getHeader() {
+        return header;
+    }
+    public Map<String, byte[]> getBody() {
+        return body;
+    }
+
+    public void setMessage_size(int message_size) {
+        this.message_size = message_size;
+    }
+    public void setHeader(Map<String, Integer> header) {
+        this.header = header;
+    }
+    public void setBody(Map<String, byte[]> body) {
+        this.body = body;
+    }
+
+
+}
