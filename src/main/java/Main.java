@@ -2,6 +2,7 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 // import ResponseMessage if needed, e.g.:;
   // Example: Convert object to byte array
 import java.io.ByteArrayOutputStream;
@@ -27,6 +28,7 @@ public class Main {
     Socket clientSocket = null;
     int port = 9092;
     try {
+      System.out.println("Read byte: " + port);
       serverSocket = new ServerSocket(port);
       // Since the tester restarts your program quite often, setting SO_REUSEADDR
       // ensures that we don't run into 'Address already in use' errors
@@ -42,7 +44,9 @@ public class Main {
 
       ResponseMessage rcvivedMessage = new ResponseMessage( null, null) ;
       java.util.HashMap<String, byte[]> headerMap = new java.util.HashMap<>();
-      headerMap.put("correlation_id", new byte[]{0,0,0,0,0,0,0,7});
+      ByteBuffer buffer = ByteBuffer.allocate(4);
+      buffer.putInt(7);
+      headerMap.put("correlation_id", buffer.array());
       rcvivedMessage.setHeader(headerMap);
       rcvivedMessage.setMessage_size(5);
       byte[] bodyContent = new byte[]{10,20,30,40};
@@ -51,10 +55,14 @@ public class Main {
       rcvivedMessage.setBody(bodyMap);
       System.out.println("Message Size: " + rcvivedMessage.getMessage_size());
       System.out.println("Header correlation_id: " + rcvivedMessage.getHeader().get("correlation_id"));
+      for (byte b : rcvivedMessage.getHeader().get("correlation_id")) {
+          System.out.print(b + " ");
+      }
       System.out.print("Body content: ");
       for(byte b : rcvivedMessage.getBody().get("body")) {
           System.out.print(b + " ");
       }
+
       byte[] rcvivedBytes = toBytes(rcvivedMessage);
       // System.out.println("\nTotal bytes to send: " + rcvivedBytes.length);
       // clientSocket.getOutputStream().write(rcvivedBytes);
