@@ -44,7 +44,7 @@ public class Main {
 
       ResponseMessage rcvivedMessage = new ResponseMessage( null, null) ;
       java.util.HashMap<String, byte[]> headerMap = new java.util.HashMap<>();
-      ByteBuffer buffer = ByteBuffer.allocate(4);
+      ByteBuffer buffer = ByteBuffer.allocate(8);
       buffer.putInt(88);
       headerMap.put("correlation_id", buffer.array());
       rcvivedMessage.setHeader(headerMap);
@@ -66,8 +66,8 @@ public class Main {
       byte[] rcvivedBytes = toBytes(rcvivedMessage);
       // System.out.println("\nTotal bytes to send: " + rcvivedBytes.length);
       // clientSocket.getOutputStream().write(rcvivedBytes);
-      //clientSocket.getOutputStream().write(rcvivedMessage.getHeader().get("correlation_id"));
-      clientSocket.getOutputStream().write(new byte[] {0, 0, 0, 0, 0, 0, 0, 7});
+      clientSocket.getOutputStream().write(rcvivedMessage.getHeader().get("correlation_id"));
+     
       
 
     } catch (IOException e) {
