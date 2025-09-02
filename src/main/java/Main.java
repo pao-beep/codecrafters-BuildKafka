@@ -66,8 +66,8 @@ public class Main {
       byte[] rcvivedBytes = toBytes(rcvivedMessage);
       // System.out.println("\nTotal bytes to send: " + rcvivedBytes.length);
       // clientSocket.getOutputStream().write(rcvivedBytes);
-      clientSocket.getOutputStream().write(rcvivedMessage.getHeader().get("correlation_id"));
-      
+      //clientSocket.getOutputStream().write(rcvivedMessage.getHeader().get("correlation_id"));
+      clientSocket.getOutputStream().write(new byte[] {0, 0, 0, 0, 0, 0, 0, 7});
       
 
     } catch (IOException e) {
