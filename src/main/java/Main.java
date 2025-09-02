@@ -54,7 +54,7 @@ public class Main {
       bodyMap.put("body", bodyContent);
       rcvivedMessage.setBody(bodyMap);
       System.out.println("Message Size: " + rcvivedMessage.getMessage_size());
-      System.out.println("Header correlation_id: " + rcvivedMessage.getHeader().get("correlation_id"));
+      System.out.println("Headder correlation_id: " + rcvivedMessage.getHeader().get("correlation_id"));
       for (byte b : rcvivedMessage.getHeader().get("correlation_id")) {
           System.out.print(b + " ");
       }
