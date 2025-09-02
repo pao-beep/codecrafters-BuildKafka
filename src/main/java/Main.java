@@ -3,8 +3,20 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 // import ResponseMessage if needed, e.g.:;
-
+  // Example: Convert object to byte array
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 public class Main {
+
+
+
+  public static byte[] toBytes(Object obj) throws IOException {
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      ObjectOutputStream oos = new ObjectOutputStream(bos);
+      oos.writeObject(obj);
+      oos.flush();
+      return bos.toByteArray();
+  }
   public static void main(String[] args){
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     System.err.println("Logs from your program will appear here!");
@@ -29,8 +41,8 @@ public class Main {
       System.out.println("Read byte: " + read_val);
 
       ResponseMessage rcvivedMessage = new ResponseMessage( null, null) ;
-      java.util.HashMap<String, Integer> headerMap = new java.util.HashMap<>();
-      headerMap.put("correlation_id", read_val);
+      java.util.HashMap<String, byte[]> headerMap = new java.util.HashMap<>();
+      headerMap.put("correlation_id", new byte[]{0,0,0,7});
       rcvivedMessage.setHeader(headerMap);
       rcvivedMessage.setMessage_size(5);
       byte[] bodyContent = new byte[]{10,20,30,40};
@@ -40,7 +52,12 @@ public class Main {
       System.out.println("Message Size: " + rcvivedMessage.getMessage_size());
       System.out.println("Header correlation_id: " + rcvivedMessage.getHeader().get("correlation_id"));
       System.out.print("Body content: ");
-      clientSocket.getOutputStream().write(rcvivedMessage.getHeader().get("correlation_id"));
+      for(byte b : rcvivedMessage.getBody().get("body")) {
+          System.out.print(b + " ");
+      }
+      byte[] rcvivedBytes = toBytes(rcvivedMessage);
+      System.out.println("\nTotal bytes to send: " + rcvivedBytes.length);
+      clientSocket.getOutputStream().write(rcvivedBytes);
       
       
 
