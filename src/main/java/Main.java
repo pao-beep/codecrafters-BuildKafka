@@ -42,7 +42,7 @@ public class Main {
 
       ResponseMessage rcvivedMessage = new ResponseMessage( null, null) ;
       java.util.HashMap<String, byte[]> headerMap = new java.util.HashMap<>();
-      headerMap.put("correlation_id", new byte[]{0,0,0,7});
+      headerMap.put("correlation_id", new byte[]{00,00,00,07});
       rcvivedMessage.setHeader(headerMap);
       rcvivedMessage.setMessage_size(5);
       byte[] bodyContent = new byte[]{10,20,30,40};
