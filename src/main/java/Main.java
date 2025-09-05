@@ -57,7 +57,7 @@ public class Main {
       }
 
       ByteBuffer headerBuffer = ByteBuffer.wrap(headerBytes);
-      headerBuffer.position(8); // Move to the position of correlation_id
+      headerBuffer.position(8); // Move to the position of correlation_id.
       int correlationId = headerBuffer.getInt();
       System.out.println("Correlation ID: " + correlationId);
 
