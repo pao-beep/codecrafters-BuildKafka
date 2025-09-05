@@ -64,14 +64,17 @@ public class Main {
 
       ByteBuffer correlationIdByteBuffer = ByteBuffer.allocate(4);
       correlationIdByteBuffer.putInt(correlationId);
-
-      ResponseMessage rcvivedMessage = new ResponseMessage( null, null) ;
+      System.out.println("Correlation ID bytes: ");
+      for (byte b : correlationIdByteBuffer.array()) {
+          System.out.printf("%02x ", b);
+      }
+      RequestMessage rcvivedMessage = new RequestMessage( null, null); ;
       java.util.HashMap<String, byte[]> headerMap = new java.util.HashMap<>();
       headerMap.put("correlation_id", correlationIdByteBuffer.array());
       rcvivedMessage.setMessage_size(4);
       rcvivedMessage.setHeader(headerMap);
       ByteBuffer responseBuffer = ByteBuffer.allocate(4 + 4); // 4 bytes for size + 4 bytes for correlation_id
-      //responseBuffer.putInt(0); 
+      responseBuffer.putInt(0); 
       responseBuffer.put(correlationIdByteBuffer.array());
       byte[] responseBytes = responseBuffer.array();
       System.out.println("Response bytes to send: ");

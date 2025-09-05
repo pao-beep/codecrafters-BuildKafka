@@ -3,7 +3,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class RequestMessage implements java.io.Serializable {
-    private int message_size = 4096; 
+   private byte[] message_size; 
     private int correlation_id = 0;
     int request_api_key = 0;
     int request_api_version = 0;
@@ -28,7 +28,7 @@ public class RequestMessage implements java.io.Serializable {
         this.tag_buffer = tag_buffer;
     }
     public long getMessage_size() {
-        return message_size;
+        return this.message_size.length;
     }
     public Map<String, byte[]> getHeader() {
         return header;
@@ -38,7 +38,7 @@ public class RequestMessage implements java.io.Serializable {
     }
 
     public void setMessage_size(int message_size) {
-        this.message_size = message_size;
+        this.message_size = new byte[message_size];
     }
     public void setHeader(Map<String, byte[]> header) {
         this.header = header;
