@@ -41,7 +41,7 @@ public class Main {
       
       // Example: read a byte
       int read_val= clientSocket.getInputStream().read();
-      System.out.println("Read byte: " + read_val);
+      System.out.println("Read byte from client: " + read_val);
 
       //first 12 bytes in header before correlation_id
       byte[] headerBytes = new byte[12];
@@ -70,10 +70,10 @@ public class Main {
       rcvivedMessage.setMessage_size(4);
       rcvivedMessage.setHeader(headerMap);
       ByteBuffer responseBuffer = ByteBuffer.allocate(4 + 4); // 4 bytes for size + 4 bytes for correlation_id
-      responseBuffer.putInt(4); 
+      responseBuffer.putInt(0); 
       responseBuffer.put(correlationIdByteBuffer.array());
       byte[] responseBytes = responseBuffer.array();
-      clientSocket.getOutputStream().write(responseBytes);
+      clientSocket.getOutputStream().write(responseBuffer.array());
       // ByteBuffer buffer = ByteBuffer.allocate(8);
       // buffer.putLong(7);
       //headerMap.put("correlation_id", buffer.array());
