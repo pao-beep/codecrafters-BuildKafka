@@ -42,32 +42,6 @@ public class Main {
       // Example: read a byte
       int read_val= clientSocket.getInputStream().read();
       System.out.println("Read byte: " + read_val);
-      
-      /*In this stage, you'll replace the hard-coded correlation ID with the actual correlation ID from the request.
-
-Request message
-A request message has three parts:
-
-message_size
-Header
-Body
-To get the correlation_id field, you need to find its offset. You already know that message_size is 4 bytes long. And here's what the request header looks like (in this stage, we're using request header v2):
-
-Field	Data type	Description
-request_api_key	INT16	The API key for the request
-request_api_version	INT16	The version of the API for the request
-correlation_id	INT32	A unique identifier for the request
-client_id	NULLABLE_STRING	The client ID for the request
-TAG_BUFFER	COMPACT_ARRAY	Optional tagged fields
-To learn more about the different data types, see Protocol Primitive Types.
-
-Example
-Here's an example of a request message:
-
-00 00 00 23  // message_size:        35
-00 12        // request_api_key:     18
-00 04        // request_api_version: 4
-6f 7f c6 61  // correlation_id:      1870644833 */
 
       //first 12 bytes in header before correlation_id
       byte[] headerBytes = new byte[12];
@@ -87,14 +61,19 @@ Here's an example of a request message:
       int correlationId = headerBuffer.getInt();
       System.out.println("Correlation ID: " + correlationId);
 
-      ByteBuffer responsByteBuffer = ByteBuffer.allocate(4);
-      responsByteBuffer.putInt(correlationId);
+      ByteBuffer correlationIdByteBuffer = ByteBuffer.allocate(4);
+      correlationIdByteBuffer.putInt(correlationId);
 
       ResponseMessage rcvivedMessage = new ResponseMessage( null, null) ;
       java.util.HashMap<String, byte[]> headerMap = new java.util.HashMap<>();
-      headerMap.put("correlation_id", responsByteBuffer.array());
+      headerMap.put("correlation_id", correlationIdByteBuffer.array());
+      rcvivedMessage.setMessage_size(4);
       rcvivedMessage.setHeader(headerMap);
-      clientSocket.getOutputStream().write(rcvivedMessage.getHeader().get("correlation_id"));
+      ByteBuffer responseBuffer = ByteBuffer.allocate(4 + 4); // 4 bytes for size + 4 bytes for correlation_id
+      responseBuffer.putInt(4); 
+      responseBuffer.put(correlationIdByteBuffer.array());
+      byte[] responseBytes = responseBuffer.array();
+      clientSocket.getOutputStream().write(responseBytes);
       // ByteBuffer buffer = ByteBuffer.allocate(8);
       // buffer.putLong(7);
       //headerMap.put("correlation_id", buffer.array());

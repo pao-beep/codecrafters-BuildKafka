@@ -2,7 +2,7 @@
 import java.util.Map;
 import java.util.HashMap;
 public class ResponseMessage implements java.io.Serializable {
-    private int message_size = 4096; 
+    private byte[] message_size =[]; 
     private Map<String,byte[]> header = new HashMap<>();
     private Map<String, byte[]> body = new HashMap<>();
 
@@ -12,7 +12,7 @@ public class ResponseMessage implements java.io.Serializable {
         this.body = body;
     }
     public long getMessage_size() {
-        return message_size;
+        return message_size.length;
     }
     public Map<String, byte[]> getHeader() {
         return header;
@@ -22,7 +22,7 @@ public class ResponseMessage implements java.io.Serializable {
     }
 
     public void setMessage_size(int message_size) {
-        this.message_size = message_size;
+        this.message_size = new byte[message_size];
     }
     public void setHeader(Map<String, byte[]> header) {
         this.header = header;
