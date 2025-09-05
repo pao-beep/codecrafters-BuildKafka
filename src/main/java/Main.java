@@ -40,10 +40,11 @@ public class Main {
       // Now you can read/write from/to clientSocket.
       
       // Example: read a byte
-      int read_val= clientSocket.getInputStream().read();
-      System.out.println("Read byte from client: " + read_val);
+      // int read_val= clientSocket.getInputStream().read();
+      // System.out.println("Read byte from client: " + read_val);
 
       //first 12 bytes in header before correlation_id
+      System.out.println("Reading 12 bytes from client: ");
       byte[] headerBytes = new byte[12];
       int bytesRead = clientSocket.getInputStream().read(headerBytes);
       if (bytesRead != 12) {
@@ -70,9 +71,13 @@ public class Main {
       rcvivedMessage.setMessage_size(4);
       rcvivedMessage.setHeader(headerMap);
       ByteBuffer responseBuffer = ByteBuffer.allocate(4 + 4); // 4 bytes for size + 4 bytes for correlation_id
-      responseBuffer.putInt(0); 
+      //responseBuffer.putInt(0); 
       responseBuffer.put(correlationIdByteBuffer.array());
       byte[] responseBytes = responseBuffer.array();
+      System.out.println("Response bytes to send: ");
+      for (byte b : responseBytes) {
+          System.out.printf("%02x ", b);
+      }
       clientSocket.getOutputStream().write(responseBuffer.array());
       // ByteBuffer buffer = ByteBuffer.allocate(8);
       // buffer.putLong(7);
