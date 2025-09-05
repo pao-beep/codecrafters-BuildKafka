@@ -2,7 +2,7 @@
 import java.util.Map;
 import java.util.HashMap;
 public class ResponseMessage implements java.io.Serializable {
-    private byte[] message_size =[]; 
+    private byte[] message_size; 
     private Map<String,byte[]> header = new HashMap<>();
     private Map<String, byte[]> body = new HashMap<>();
 
